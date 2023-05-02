@@ -1,1 +1,1 @@
-"# WowCollections" 
+# WowCollections
