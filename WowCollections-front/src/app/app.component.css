@@ -1,0 +1,32 @@
+
+#logo {
+    position: absolute;
+    width: 48.41px;
+    height: 41.04px;
+    left: 21px;
+    top: 21px;
+}
+
+#logo-link {
+    cursor: pointer;
+}
+
+#wave-1 {
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    left: 0;
+    bottom: 0;
+    background-blend-mode: overlay;
+    mix-blend-mode: hue;    
+}
+
+#wave-2 {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    left: 0px;
+    bottom: 0;
+    background-blend-mode: overlay;
+    mix-blend-mode: hue;
+}
