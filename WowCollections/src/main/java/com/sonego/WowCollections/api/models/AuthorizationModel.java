@@ -20,4 +20,6 @@ public class AuthorizationModel {
 
     private String sub;
 
+    private String id_token;
+
 }
