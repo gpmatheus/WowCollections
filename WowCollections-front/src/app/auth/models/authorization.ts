@@ -4,5 +4,6 @@ export interface Authorization {
     expires_in: number,
     scope: string,
     sub: string,
-    expiration: number
+    expiration: number,
+    id_token: string
 }

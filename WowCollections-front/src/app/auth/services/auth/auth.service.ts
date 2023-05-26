@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Authorization } from '../../models/authorization';
 import { Observable, tap } from 'rxjs';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,14 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
 
   readonly clientId: string = "930400512a0b414fab468ac8bf8102cc";
-  readonly serverIp: string = '';
+
+  // place your public ip addess here
+  readonly serverIp: string = '192.168.1.107';
+
   readonly callbackURI: string = `http://${this.serverIp}:4200/auth/callback`;
 
   authorization!: Authorization;
+  user!: User;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,7 +25,7 @@ export class AuthService {
     return `https://us.battle.net/oauth/authorize?`
       + `client_id=${this.clientId}&`
       + `redirect_uri=${this.callbackURI}&`
-      + `scope=wow.profile&`
+      + `scope=wow.profile openid&`
       + `response_type=code&`
       + `response_mode=fragment&`
       + `state=${this.getState()}&`
@@ -37,6 +42,10 @@ export class AuthService {
       tap((auth: Authorization) => {
         auth.expiration = Math.floor(Date.now() / 1000) + auth.expires_in;
         this.authorization = auth;
+        const jwtSections = auth.id_token.split('.');
+        const payload = jwtSections[1];
+        const decodedPayload = JSON.parse(window.atob(payload));
+        this.user = { battleTag: decodedPayload['battle_tag'] };
       })
     )
   }
@@ -46,6 +55,10 @@ export class AuthService {
       return false;
     }
     return this.authorization.expiration > Math.floor(Date.now() / 1000)
+  }
+
+  get getUser(): User {
+    return this.user;
   }
 
   getToken(): string | null {
